@@ -567,7 +567,7 @@ install_dependencies(){
             autoconf automake make curl curl-devel zlib-devel perl perl-devel cpio expat-devel gettext-devel
             libev-devel c-ares-devel git qrencode
         )
-        yum_depends=( "${yum_depends_common[@]}" "${yum_python_deps[@]}"} )
+        yum_depends=( "${yum_depends_common[@]}" "${yum_python_deps[@]}" )
         for depend in ${yum_depends[@]}; do
             error_detect_depends "yum -y install ${depend}"
         done
