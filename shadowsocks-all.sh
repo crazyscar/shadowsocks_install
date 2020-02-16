@@ -556,11 +556,18 @@ install_dependencies(){
         [ x"$(yum-config-manager epel | grep -w enabled | awk '{print $3}')" != x"True" ] && yum-config-manager --enable epel > /dev/null 2>&1
         echo -e "[${green}Info${plain}] Checking the EPEL repository complete..."
 
-        yum_depends=(
-            unzip gzip openssl openssl-devel gcc python python-devel python-setuptools pcre pcre-devel libtool libevent
+        if centosversion 8;then
+            yum_python_deps=(python3 python3-devel python3-setuptools)
+        else
+            yum_python_deps=(python python-devel python-setuptools)
+        fi
+
+        yum_depends_common=(
+            unzip gzip openssl openssl-devel gcc pcre pcre-devel libtool libevent
             autoconf automake make curl curl-devel zlib-devel perl perl-devel cpio expat-devel gettext-devel
             libev-devel c-ares-devel git qrencode
         )
+        yum_depends=( "${yum_depends_common[@]}" "${yum_python_deps[@]}"} )
         for depend in ${yum_depends[@]}; do
             error_detect_depends "yum -y install ${depend}"
         done
